@@ -107,112 +107,63 @@ $oui = "oui";
                             $req->execute(array($types, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
                     ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($types, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
-                            $req->execute(array($types, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -231,7 +182,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -242,11 +193,60 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
+                            <?php } elseif (isset($_POST['+c'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
+                            $req->execute(array($types, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                             <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -254,100 +254,100 @@ $oui = "oui";
                             $req->execute(array($types, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = 'Jour' AND types= ? AND valider = 'oui' AND statuts = 'en cours'");
                             $req->execute(array($types));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
@@ -356,13 +356,13 @@ $oui = "oui";
                             $reqcount = $req->rowCount();
 
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -381,7 +381,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -392,11 +392,11 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
                             <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -405,53 +405,53 @@ $oui = "oui";
                             $req->execute(array($periode, $types, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($types, $oui, $statuts));
-                            
+
                             while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
                                 $today = $resultat["date_add"];
                                 $limit_date = $resultat["date_expire"];
@@ -498,49 +498,49 @@ $oui = "oui";
                             $req->execute(array($ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
@@ -548,13 +548,13 @@ $oui = "oui";
                             $reqcount = $req->rowCount();
 
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -573,7 +573,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -584,11 +584,11 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
                             <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -596,63 +596,14 @@ $oui = "oui";
                             $req->execute(array($ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
-                            $req->execute(array($ville, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -671,7 +622,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -682,11 +633,60 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
+                            <?php } elseif (isset($_POST['-c'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
+                            $req->execute(array($ville, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                             <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -695,49 +695,49 @@ $oui = "oui";
                             $req->execute(array($periode, $ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
@@ -746,13 +746,13 @@ $oui = "oui";
                             $reqcount = $req->rowCount();
 
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -771,7 +771,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -782,11 +782,11 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
                             <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -795,62 +795,14 @@ $oui = "oui";
                             $req->execute(array($periode, $ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND valider = ? AND statuts = ?");
-                            $req->execute(array($ville, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -869,7 +821,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -880,11 +832,59 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
+                            <?php } else {
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND valider = ? AND statuts = ?");
+                            $req->execute(array($ville, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                             <?php }
                     }
                     //////quartier/////////////////////////////
@@ -896,112 +896,14 @@ $oui = "oui";
                             $req->execute(array($quartier, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
-                            $req->execute(array($quartier, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
-                            $req->execute(array($quartier, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -1020,7 +922,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -1031,11 +933,109 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
+                            <?php } elseif (isset($_POST['-r'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
+                            $req->execute(array($quartier, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
+                            $req->execute(array($quartier, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                             <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -1043,49 +1043,49 @@ $oui = "oui";
                             $req->execute(array($quartier, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>    
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
@@ -1094,13 +1094,13 @@ $oui = "oui";
                             $reqcount = $req->rowCount();
 
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -1119,7 +1119,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -1130,11 +1130,11 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
                             <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
@@ -1143,64 +1143,14 @@ $oui = "oui";
                             $req->execute(array($periode, $quartier, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $periode = "Mois";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartier= ? AND valider = ? AND statuts = ?");
-                            $req->execute(array($periode, $quartier, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -1219,7 +1169,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -1230,60 +1180,110 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
+                            <?php } elseif (isset($_POST['pm'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $periode = "Mois";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartier= ? AND valider = ? AND statuts = ?");
+                            $req->execute(array($periode, $quartier, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                             <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($quartier, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////min/////////////////////////////
                     elseif (empty($quartier) && empty($types) && !empty($min) && empty($max) && empty($ville)) {
@@ -1294,359 +1294,14 @@ $oui = "oui";
                             $req->execute(array($min, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
-                            $req->execute(array($min, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
-                            $req->execute(array($min, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
-                            $req->execute(array($min, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $periode = "Jour";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix >= ? AND valider = ? AND statuts = ?");
-                            $req->execute(array($periode, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $periode = "Semaine";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix >= ? AND valider = ? AND statuts = ?");
-                            $req->execute(array($periode, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
-                            $oui = "oui";
-                            $statuts = "en cours";
-                            $periode = "Mois";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix >= ? AND valider = ? AND statuts = ?");
-                            $req->execute(array($periode, $min, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
-                            $statuts = "en cours";
-                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ?");
-                            $req->execute(array($min, $oui, $statuts));
-                            $reqcount = $req->rowCount();
-
                             if ($reqcount <= 0) {
-                                $text ="Aucune annonce n'a été trouvée";
-                            }else{
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
                                 while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
-        
+
                                     $today = $resultat["date_add"];
                                     $limit_date = $resultat["date_expire"];
-            
+
                                     if ($today < $limit_date) {
                             ?>
                                         <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
@@ -1665,7 +1320,7 @@ $oui = "oui";
                                                 <p class="descr"><?= $resultat['descriptions'] ?></p>
                                             </div>
                                             <div class="mycard__info">
-            
+
                                                 <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
                                                 <div>Plus de détails</div>
                                             </div>
@@ -1676,11 +1331,356 @@ $oui = "oui";
                                                 </div>
                                             </div>
                                         </a>
-            
-                                <?php }
-                                endwhile ;
+
+                            <?php }
+                                endwhile;
                             } ?>
-                            
+
+                            <?php } elseif (isset($_POST['-r'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
+                            $req->execute(array($min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
+                            $req->execute(array($min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
+                            $req->execute(array($min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $periode = "Jour";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix >= ? AND valider = ? AND statuts = ?");
+                            $req->execute(array($periode, $min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $periode = "Semaine";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix >= ? AND valider = ? AND statuts = ?");
+                            $req->execute(array($periode, $min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
+                            $oui = "oui";
+                            $statuts = "en cours";
+                            $periode = "Mois";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix >= ? AND valider = ? AND statuts = ?");
+                            $req->execute(array($periode, $min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
+                            $statuts = "en cours";
+                            $req = $loginData->prepare("SELECT * FROM annonces WHERE prix >= ? AND valider = ? AND statuts = ?");
+                            $req->execute(array($min, $oui, $statuts));
+                            $reqcount = $req->rowCount();
+
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                             <?php }
                     }
                     //////max/////////////////////////////
@@ -1690,149 +1690,149 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix <= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($max, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix <= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
@@ -1878,51 +1878,51 @@ $oui = "oui";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
@@ -1970,97 +1970,97 @@ $oui = "oui";
                             $req->execute(array($periode, $max, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix <= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////type et ville/////////////////////////////
                     elseif (empty($quartier) && !empty($types) && empty($min) && empty($max) && !empty($ville)) {
@@ -2069,198 +2069,198 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes = ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($types, $ville, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types = ? AND villes = ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($types, $ville, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($types, $ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes = ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($types, $ville, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
@@ -2268,197 +2268,197 @@ $oui = "oui";
                             $req->execute(array($periode, $types, $ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND villes = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $ville, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND villes = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $ville, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes = ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($types, $ville, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////type et quartier/////////////////////////////
                     elseif (!empty($quartier) && !empty($types) && empty($min) && empty($max) && empty($ville)) {
@@ -2467,397 +2467,397 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND quartiers = ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types = ? AND quartiers = ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND quartiers= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND quartiers = ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND quartiers = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND quartiers = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND quartiers = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $oui = "oui";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND quartiers= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($types, $quartier, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////type et min/////////////////////////////
                     elseif (empty($quartier) && !empty($types) && !empty($min) && empty($max) && empty($ville)) {
@@ -2866,396 +2866,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types = ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix >= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($types, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////type et max/////////////////////////////
                     elseif (empty($quartier) && !empty($types) && empty($min) && !empty($max) && empty($ville)) {
@@ -3264,396 +3264,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types = ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND prix <= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($types, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////ville et quartier/////////////////////////////
                     elseif (!empty($quartier) && empty($types) && empty($min) && empty($max) && !empty($ville)) {
@@ -3662,396 +3662,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND quartiers = ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes = ? AND quartiers = ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND quartiers= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND quartiers = ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND quartiers = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND quartiers = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND quartiers = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND quartiers= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////ville et min/////////////////////////////
                     elseif (empty($quartier) && empty($types) && !empty($min) && empty($max) && !empty($ville)) {
@@ -4060,396 +4060,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($ville, $min, $oui, $statuts));
-                          $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes = ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($ville, $min, $oui, $statuts));
                             $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($ville, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($ville, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix >= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($ville, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////ville et max/////////////////////////////
                     elseif (empty($quartier) && empty($types) && empty($min) && !empty($max) && !empty($ville)) {
@@ -4458,396 +4458,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes = ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND villes= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE villes= ? AND prix <= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($ville, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////quartier et min/////////////////////////////
                     elseif (!empty($quartier) && empty($types) && !empty($min) && empty($max) && empty($ville)) {
@@ -4856,396 +4856,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers = ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix >= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartiers= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartiers= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartiers= ? AND prix >= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix >= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($quartier, $min, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////quartier et max/////////////////////////////
                     elseif (!empty($quartier) && empty($types) && empty($min) && !empty($max) && empty($ville)) {
@@ -5254,396 +5254,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers = ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix <= ? AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartiers= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartiers= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND quartiers= ? AND prix <= ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE quartiers= ? AND prix <= ? AND valider = ? AND statuts = ? ");
                             $req->execute(array($quartier, $max, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     //////min et max/////////////////////////////
                     elseif (empty($quartier) && empty($types) && !empty($min) && !empty($max) && empty($ville)) {
@@ -5652,396 +5652,396 @@ $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND valider = ? AND statuts = ? ORDER BY id_annonces DESC");
                             $req->execute(array($oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND valider = ? AND statuts = ? ORDER BY id_annonces ASC");
                             $req->execute(array($oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND valider = ? AND statuts = ? ORDER BY prix DESC");
                             $req->execute(array($oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND valider = ? AND statuts = ? ORDER BY prix ASC");
                             $req->execute(array($oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE  prix BETWEEN $min AND $max AND periode = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND periode = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND periode = ? AND valider = ? AND statuts = ?");
                             $req->execute(array($periode, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE prix BETWEEN $min AND $max AND valider = ? AND statuts = ? ");
                             $req->execute(array($oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php }
                     }
                     ///////////////////////////all/////////////////!empty($min) and !empty($max) and !empty($types) and !empty($ville) and !empty($quartier)/////////////
                     elseif (!empty($min) && !empty($max) && !empty($types) && !empty($ville) && !empty($quartier)) {
@@ -6051,254 +6051,254 @@ $oui = "oui";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min
                             AND $max ORDER BY id_annonces DESC");
                             $req->execute(array($types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php }elseif (isset($_POST['-r'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-r'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min
                                 AND $max ORDER BY id_annonces ASC");
                             $req->execute(array($types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['+c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['+c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min
                                 AND
                                 $max ORDER BY prix DESC");
                             $req->execute(array($types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['-c'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['-c'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min
                                 AND
                                 $max ORDER BY prix ASC");
                             $req->execute(array($types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pj'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pj'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Jour";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min
                                 AND $max");
                             $req->execute(array($periode, $types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['ps'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['ps'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Semaine";
@@ -6306,150 +6306,150 @@ $oui = "oui";
                                 AND
                                 $max");
                             $req->execute(array($periode, $types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } elseif (isset($_POST['pm'])) {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } elseif (isset($_POST['pm'])) {
                             $oui = "oui";
                             $statuts = "en cours";
                             $periode = "Mois";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE periode = ? AND types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min AND $max");
                             $req->execute(array($periode, $types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
-                    <?php } else {
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
+                            <?php } else {
                             $statuts = "en cours";
                             $req = $loginData->prepare("SELECT * FROM annonces WHERE types= ? AND villes= ? AND quartiers= ? AND valider = ? AND statuts = ? AND prix BETWEEN $min
                                 AND
                                 $max");
                             $req->execute(array($types, $ville, $quartier, $oui, $statuts));
-                           $reqcount = $req->rowCount();
+                            $reqcount = $req->rowCount();
 
-                    if ($reqcount <= 0) {
-                        $text ="Aucune annonce n'a été trouvée";
-                    }else{
-                        while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
+                            if ($reqcount <= 0) {
+                                $text = "Aucune annonce n'a été trouvée";
+                            } else {
+                                while ($resultat = $req->fetch(PDO::FETCH_ASSOC)) :
 
-                            $today = $resultat["date_add"];
-                            $limit_date = $resultat["date_expire"];
-    
-                            if ($today < $limit_date) {
-                    ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
-                                    <?php if ($resultat['options'] == "urgence") : ?>
-                                        <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
-                                    <?php endif; ?>
-                                    <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
-                                    <div class="mycard__content">
-                                        <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
-                                        <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <span class="vq">
-                                                <?= $resultat['quartiers'] ?>,
-                                                <?= $resultat['villes'] ?>
-                                            </span>
-                                        </p>
-                                        <p class="descr"><?= $resultat['descriptions'] ?></p>
-                                    </div>
-                                    <div class="mycard__info">
-    
-                                        <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
-                                        <div>Plus de détails</div>
-                                    </div>
-                                    <div class="mycard__time">
-                                        <div>
-                                            <i class="fa-solid fa-clock-rotate-left"></i>
-                                            <?php echo time_ago($resultat['date_add']) ?>
-                                        </div>
-                                    </div>
-                                </a>
-    
-                        <?php }
-                        endwhile ;
-                    } ?>
-                    
+                                    $today = $resultat["date_add"];
+                                    $limit_date = $resultat["date_expire"];
+
+                                    if ($today < $limit_date) {
+                            ?>
+                                        <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                            <?php if ($resultat['options'] == "urgence") : ?>
+                                                <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
+                                            <?php endif; ?>
+                                            <img src="<?= $resultat['img_cover'] ?>" class=" mycard__image">
+                                            <div class="mycard__content">
+                                                <p class="titre" style="text-transform:capitalize;"><?= $resultat['titres'] ?></p>
+                                                <p class=" localisation"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                    <span class="vq">
+                                                        <?= $resultat['quartiers'] ?>,
+                                                        <?= $resultat['villes'] ?>
+                                                    </span>
+                                                </p>
+                                                <p class="descr"><?= $resultat['descriptions'] ?></p>
+                                            </div>
+                                            <div class="mycard__info">
+
+                                                <div><span class="text-success fw-bolder"><?= number_format($resultat['prix'], 0, '.', ' ')  ?> FCFA<?= $resultat['periode'] ?></span></div>
+                                                <div>Plus de détails</div>
+                                            </div>
+                                            <div class="mycard__time">
+                                                <div>
+                                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                                    <?php echo time_ago($resultat['date_add']) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                            <?php }
+                                endwhile;
+                            } ?>
+
                     <?php }
                     } else {
                     }
@@ -6457,16 +6457,16 @@ $oui = "oui";
                 </div>
                 <?php
 
-                
-                if(!empty($text)){
-                    ?> 
-                   <div class="delete_padding mx-auto" style="width: 98%;">
-                <p class="alert alert-success text-center fw-bolder"><?= $text ?></p>
-        
-                </div>
-                    
-               <?php 
-                   }
+
+                if (!empty($text)) {
+                ?>
+                    <div class="delete_padding mx-auto" style="width: 98%;">
+                        <p class="alert alert-success text-center fw-bolder"><?= $text ?></p>
+
+                    </div>
+
+                <?php
+                }
                 ?>
             </div>
             <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

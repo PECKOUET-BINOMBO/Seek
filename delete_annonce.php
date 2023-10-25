@@ -1,7 +1,7 @@
 <?php
 session_start();
 require "sendmail.php";
-$rec2 =  $_GET['id_annonces']; 
+$rec2 =  $_GET['annonce']; 
 require 'conf/login_data.php';
 
 

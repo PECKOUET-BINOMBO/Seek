@@ -286,10 +286,13 @@ if ($res_vue == 0) {
                             <?php if (isset($_SESSION['id']) && $_SESSION['id'] == $rec) : ?>
                                 <div>
                                     <button class="btn btn-success text-center px-1 mx-1">
-                                        <a class="link-light" style="text-decoration:none; border-radius:5px; display:inline-block" href="update.php?id=<?= $rec ?>&annonce=<?= $rec2 ?>" title="Modifier l'annonce">Modifier</a>
+                                        
+                                        <a class="link-light" style="text-decoration:none; border-radius:5px; display:inline-block" href="update.php?id=<?= $rec ?>&annonce=<?= $rec2 ?>" title="Modifier l'annonce"><strong>Modifier</strong></a>
+                                        
                                     </button>
                                     <button class="btn btn-danger  text-center px-1 mx-1">
-                                        <a class="link-light" style="text-decoration:none; border-radius:5px; display:inline-block" href="delete_annonce.php?id=<?= $rec ?>&annonce=<?= $rec2 ?>" onclick="return confirmDelete2();" title="Voire l'annonce">Supprimer</a>
+                                        <a class="link-light" style="text-decoration:none; border-radius:5px; display:inline-block" href="delete_annonce.php?annonce=<?= $rec2 ?>" title="Voire l'annonce"><strong>Supprimer</strong></a>
+                                        
                                     </button>
                                 </div>
                             <?php endif; ?>
@@ -503,7 +506,7 @@ if ($res_vue == 0) {
                 }
             }
 
-            setInterval(changeImage, 2500);
+            setInterval(changeImage, 500);
         </script>
 
     <?php }
@@ -549,7 +552,7 @@ if ($res_vue == 0) {
                 }
             }
 
-            setInterval(changeImage, 2500);
+            setInterval(changeImage, 500);
         </script>
 
     <?php }
@@ -601,7 +604,7 @@ if ($res_vue == 0) {
                 }
             }
 
-            setInterval(changeImage, 2500);
+            setInterval(changeImage, 500);
         </script>
 
     <?php }
@@ -659,7 +662,7 @@ if ($res_vue == 0) {
                 }
             }
 
-            setInterval(changeImage, 2500);
+            setInterval(changeImage, 500);
         </script>
 
     <?php }
@@ -723,7 +726,7 @@ if ($res_vue == 0) {
                 }
             }
 
-            setInterval(changeImage, 2500);
+            setInterval(changeImage, 3500);
         </script>
 
     <?php }
