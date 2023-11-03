@@ -1,5 +1,3 @@
-
-
 ////////////////////////////////////////////
 // On va chercher les différents éléments de notre page
 const pages = document.querySelectorAll(".page")
@@ -120,3 +118,5 @@ function confirmDelete2() {
 
   return false; // Empêche le lien de se comporter normalement (d'ouvrir la page spécifiée dans le href)
 }
+
+//////////////////////////////////////////////////////////////////////////////

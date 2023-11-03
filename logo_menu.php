@@ -151,9 +151,9 @@ $counts16 = $counts16->rowCount();
 <nav class="row navbar navbar-expand-lg navbar-light">
     <div class="container-fluid" style="padding-top: 20px;">
     <h3 style="visibility: hidden;">Logo</h3>
-    <a class="navbar-brand" href="index.php" style="width: 135px; position: absolute;">
-            <img src="img/SEEK4.png" alt="Logo" style="object-fit: cover; object-position: center; width: 100%;">
-        </a>
+    <a class="navbar-brand sitelogo" href="index.php" id="sitelogo" style="width: 135px; position: absolute;">
+        <img src="img/SEEK4.png" alt="Logo" style="object-fit: cover; object-position: center; width: 100%;">
+    </a>
         <button class="navbar-toggler" style="background: rgb(215 215 215 / 20%);" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -161,10 +161,10 @@ $counts16 = $counts16->rowCount();
         <div class="collapse navbar-collapse box-kink" id="navbarNavAltMarkup">
             <div class="navbar-nav " style="font-size:14px;">
 
-                <a class="nav-link accueil_link" aria-current="page" href="index.php">Accueil</a>
+                <a class="nav-link accueil_link siteaccueil" aria-current="page" href="index.php" id="accueil">Accueil</a>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAcheter" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle siteacheter" href="#" id="navbarDropdownAcheter" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Acheter
                     </a>
                     <ul class="dropdown-menu menu-li" aria-labelledby="navbarDropdownAcheter">
@@ -188,8 +188,8 @@ $counts16 = $counts16->rowCount();
                     </ul>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLouer" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle sitelouer" href="#" id="navbarDropdownLouer" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Louer
                     </a>
                     <ul class="dropdown-menu menu-li" aria-labelledby="navbarDropdownLouer">
@@ -213,18 +213,18 @@ $counts16 = $counts16->rowCount();
                     </ul>
                 </li>
 
-                <a class="nav-link colocation_link" href="colocation.php">Collocation</a>
+                <a class="nav-link colocation_link sitecollocation" href="colocation.php">Collocation</a>
 
                 <?php if (isset($_SESSION['id'])) : ?>
-                    <a class="nav-link mes_annonces_link" href="mes_annonces.php">Mes annonces <span>(<?= $count_annonce; ?>)</span></a>
-                    <a class="nav-link ajouter_annonce_link" href="ajouter_annonce.php"> Ajouter une annonce</a>
-                    <a class="nav-link mon_compte_link building-user" href="profil.php" style="text-transform: capitalize;">
+                    <a class="nav-link mes_annonces_link " href="mes_annonces.php">Mes annonces <span>(<?= $count_annonce; ?>)</span></a>
+                    <a class="nav-link ajouter_annonce_link " href="ajouter_annonce.php"> Ajouter une annonce</a>
+                    <a class="nav-link mon_compte_link building-user sitecompte" href="profil.php" style="text-transform: capitalize;">
                         <?= $_SESSION['pseudo']  ?> <i class="fa-solid fa-building-user"></i> </a>
-                    <a class="nav-link" href="deconnexion.php"><i class="fa-solid fa-power-off"></i></a>
+                    <a class="nav-link sitedeconnexion" href="deconnexion.php"><i class="fa-solid fa-power-off"></i></a>
                 <?php endif; ?>
                 <?php if (!isset($_SESSION['id'])) : ?>
-                    <a class=" nav-link connexion_link" href="connexion.php"><i class="fa-solid fa-user-plus"></i> Se connecter</a>
-                    <a class="nav-link inscription_link" href="inscription.php"><i class="fa-solid fa-user"></i> S'inscrire</a>
+                    <a class=" nav-link connexion_link siteconnexion" href="connexion.php"><i class="fa-solid fa-user-plus"></i> Se connecter</a>
+                    <a class="nav-link inscription_link siteinscription" href="inscription.php"><i class="fa-solid fa-user"></i> S'inscrire</a>
                 <?php endif; ?>
             </div>
         </div>

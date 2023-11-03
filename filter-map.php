@@ -1,7 +1,7 @@
 <div class="row">
     <div class="filtre map " id="filtre map">
         <div class="row justify-content-center justify-content-md-around justify-content-lg-center">
-            <div class="filtre-form col-10 my-2  col-sm-6 col-md-5 col-lg-3 " style="z-index: 1;">
+            <div class="filtre-form col-10 my-2  col-sm-6 col-md-5 col-lg-3 sitesearch" style="z-index: 1;">
                 <!-- comptage du nombre d'annonce -->
                 <?php
                 $req = $loginData->prepare("SELECT * FROM annonces WHERE valider = 'oui' AND statuts = 'en cours'");
@@ -386,7 +386,7 @@
                 </form>
             </div>
             <!-- map -->
-            <div class="filtre-carte map__image  d-none d-md-flex my-2 col-5 align-items-center justify-content-lg-center  col-lg-5 mx-2" id="filtre-carte">
+            <div class="filtre-carte map__image  d-none d-md-flex my-2 col-5 align-items-center justify-content-lg-center  col-lg-5 mx-2 sitemap" id="filtre-carte">
                 <svg baseprofile="tiny" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" version="1.2" viewbox="0 0 1000 737" width="1000" xmlns="http://www.w3.org/2000/svg">
                     <?php
                     $sedhiou = $loginData->prepare("SELECT villes FROM annonces WHERE villes ='Sédhiou' AND  valider = 'oui' AND statuts = 'en cours' ");
@@ -527,7 +527,7 @@
                 </svg>
             </div>
             <!-- liste ville -->
-            <div class="filtre-ville map__list  d-none d-lg-block my-2 col-2" id="filtre-ville">
+            <div class="filtre-ville map__list  d-none d-lg-block my-2 col-2 siteliste" id="filtre-ville">
                 <ul>
 
                     <li>

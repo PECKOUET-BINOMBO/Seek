@@ -3,7 +3,7 @@
         <section class="row type-offre ">
             <h3>Parcourez les types d'offres</h3>
             <div class="story-container">
-                <ul>
+                <ul class="sitecategorie">
                     <a href="types.php?titre=appartements&types=Appartement">
                         <li class="has-story">
                             <div class="story">

@@ -55,9 +55,9 @@ while ($annonce = $verify_query->fetch()) {
         </div>
 
         <div class=" offre-ideale">
-            <?php include "pub.php" ?>
+            
 
-            <div class="mycards">
+            <div class="mycards siteoffre">
 
                 <?php
                 if (isset($_POST['+r'])) {
@@ -78,7 +78,7 @@ while ($annonce = $verify_query->fetch()) {
 
                             if ($today < $limit_date) {
                 ?>
-                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class=" mycard">
+                                <a href="plus_de_details.php?id=<?= $resultat['id_annonceurs'] ?>&annonce=<?= $resultat['id_annonces'] ?>" class="mycard">
                                     <?php if ($resultat['options'] == "urgence") : ?>
                                         <p class="urgence">Urgence <i class="fa-solid fa-bell"></i></p>
                                     <?php endif; ?>
