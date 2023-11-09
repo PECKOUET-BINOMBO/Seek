@@ -1,7 +1,8 @@
 <?php
 session_start();
-$pseudo =  isset($_SESSION['pseudo']) ?  $_SESSION['pseudo'] : NULL;
-$_SESSION['free'] = 'Félicitation ' . $pseudo . ' vous profitez de la période d\'ajout gratuite';
+$id = isset($_SESSION['id']) ? $_SESSION['id'] : NULL;
+//$pseudo =  isset($_SESSION['pseudo']) ?  $_SESSION['pseudo'] : NULL;
+
 require 'ip.php';
 require 'conf/login_data.php';
 
@@ -9,11 +10,6 @@ $login = $loginData->prepare("SELECT * FROM tuto WHERE ip_new_visiteur	 = ?");
 $login->execute(array($ip));
 $res_tuto = $login->rowCount();
 
-if ($res_tuto == 0) {
-    // Insérer l'adresse IP dans la table ip
-    $insert_ip = $loginData->prepare("INSERT INTO tuto (ip_new_visiteur) VALUES (?)");
-    $insert_ip->execute([$ip]);
-}
 
 if (isset($_POST['rechercher'])) {
     $types = isset($_POST['type']) ? $_POST['type'] : NULL;
@@ -158,81 +154,92 @@ if (isset($_POST['rechercher'])) {
     <!--javaSCript-->
     <script src="main.js"></script>
     <?php
-    if ($res_tuto == 0) {
-        echo " 
-    <script>
-        const driver = window.driver.js.driver;
+    if (!isset($_SESSION['id'])) {
+        // Vérifier si l'utilisateur est sur un ordinateur en vérifiant le User Agent
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $isDesktop = preg_match('/Windows|Mac/i', $userAgent);
 
-        const driverObj = driver({
+    
+        if ($res_tuto == 0 && $isDesktop) {
+            echo " 
+            <script>
+                const driver = window.driver.js.driver;
 
-            showProgress: true,
-            steps: [{
-                    element: '.siteacheter',
-                    popover: {
-                        description: 'Retrouvez toutes nos offres d\'achats par catégories'
-                    }
-                },
-                {
-                    element: '.sitelouer',
-                    popover: {
-                        description: 'Retrouvez toutes nos offres locatives par catégories'
-                    }
-                },
-                {
-                    element: '.sitecollocation',
-                    popover: {
-                        description: 'Besoin d\'un(e) collocataire ? Ajoutez ou consultez des annonces de collocation.'
-                    }
-                },
-                {
-                    element: '.siteconnexion',
-                    popover: {
-                        description: 'Connectez-vous  afin d\'ajouter, modifier ou supprimer vos annonces et bien d\'autres.'
-                    }
-                },
-                {
-                    element: '.siteinscription',
-                    popover: {
-                        description: 'Pas encore de compte, inscrivez-vous gratuitement.'
-                    }
-                },
-                {
-                    element: '.sitesearch',
-                    popover: {
-                        description: 'Trouvez l\'offre idéale selon vos préférences.'
-                    }
-                },
-                {
-                    element: '.sitemap',
-                    popover: {
-                        description: 'Survoler une région pour découvrir son nom, mais aussi ses  offres.'
-                    }
-                },
-                {
-                    element: '.siteliste',
-                    popover: {
-                        description: 'Sélectionnez la régions de votre choix découvrez son emplacement et consultez-y les offres présentent.'
-                    }
-                },
-                {
-                    element: '.sitecategorie',
-                    popover: {
-                        description: 'Parcourez nos offres selon la catégorie de votre choix.'
-                    }
-                },
-                {
-                    element: '.siteoffre',
-                    popover: {
-                        description: 'Retrouvez ici le fil d\'actualité de nos différentes offres.'
-                    }
-                },
-            ]
+                const driverObj = driver({
 
-        });
-        driverObj.drive();
-    </script>
-    ";
+                    showProgress: true,
+                    steps: [{
+                            element: '.siteacheter',
+                            popover: {
+                                description: 'Retrouvez toutes nos offres d\'achats par catégories.'
+                            }
+                        },
+                        {
+                            element: '.sitelouer',
+                            popover: {
+                                description: 'Retrouvez toutes nos offres locatives par catégories.'
+                            }
+                        },
+                        {
+                            element: '.sitecollocation',
+                            popover: {
+                                description: 'Besoin d\'un(e) collocataire ? Ajoutez ou consultez des annonces de collocation.'
+                            }
+                        },
+                        {
+                            element: '.siteconnexion',
+                            popover: {
+                                description: 'Connectez-vous  afin d\'ajouter, modifier ou supprimer vos annonces et bien d\'autres.'
+                            }
+                        },
+                        {
+                            element: '.siteinscription',
+                            popover: {
+                                description: 'Pas encore de compte, inscrivez-vous gratuitement.'
+                            }
+                        },
+                        {
+                            element: '.sitesearch',
+                            popover: {
+                                description: 'Trouvez l\'offre idéale selon vos préférences.'
+                            }
+                        },
+                        {
+                            element: '.sitemap',
+                            popover: {
+                                description: 'Survoler une région pour découvrir son nom, mais aussi ses  offres.'
+                            }
+                        },
+                        {
+                            element: '.siteliste',
+                            popover: {
+                                description: 'Sélectionnez la régions de votre choix découvrez son emplacement et consultez-y les offres présentent.'
+                            }
+                        },
+                        {
+                            element: '.sitecategorie',
+                            popover: {
+                                description: 'Parcourez nos offres selon la catégorie de votre choix.'
+                            }
+                        },
+                        {
+                            element: '.siteoffre',
+                            popover: {
+                                description: 'Retrouvez ici le fil d\'actualité de nos différentes offres.'
+                            }
+                        },
+                    ]
+
+                });
+                driverObj.drive();
+            </script>
+            ";
+            // Insérer l'adresse IP dans la table ip
+            $insert_ip = $loginData->prepare("INSERT INTO tuto (ip_new_visiteur) VALUES (?)");
+            $insert_ip->execute([$ip]);
+        }
     }
+
     ?>
 </body>
 

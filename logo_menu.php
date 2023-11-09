@@ -216,8 +216,8 @@ $counts16 = $counts16->rowCount();
                 <a class="nav-link colocation_link sitecollocation" href="colocation.php">Collocation</a>
 
                 <?php if (isset($_SESSION['id'])) : ?>
-                    <a class="nav-link mes_annonces_link " href="mes_annonces.php">Mes annonces <span>(<?= $count_annonce; ?>)</span></a>
-                    <a class="nav-link ajouter_annonce_link " href="ajouter_annonce.php"> Ajouter une annonce</a>
+                    <a class="nav-link mes_annonces_link sitemesannonces" href="mes_annonces.php">Mes annonces <span>(<?= $count_annonce; ?>)</span></a>
+                    <a class="nav-link ajouter_annonce_link siteaddannonces" href="ajouter_annonce.php"> Ajouter une annonce</a>
                     <a class="nav-link mon_compte_link building-user sitecompte" href="profil.php" style="text-transform: capitalize;">
                         <?= $_SESSION['pseudo']  ?> <i class="fa-solid fa-building-user"></i> </a>
                     <a class="nav-link sitedeconnexion" href="deconnexion.php"><i class="fa-solid fa-power-off"></i></a>

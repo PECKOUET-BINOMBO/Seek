@@ -49,12 +49,7 @@ if ($res_vue == 0) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- share whatsapp
-    <meta property=og:url content="http://localhost/projet-site-de-courtage/plus_de_details.php?id=14&annonce=11 " />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="titre annonce" />
-    <meta property="og:description" content="description annnce" />
-    <meta property="og:image" content="image couverture annonce" /> -->
+
 
     <!--fontawesome 4-->
     <script src=" https://kit.fontawesome.com/727be77922.js" crossorigin="anonymous">
@@ -265,34 +260,34 @@ if ($res_vue == 0) {
                         </div>
                         <!-- lier tables -->
                         <div class="annonceur">
-                        <?php if(isset($_SESSION['id']) && $_SESSION['id'] == $rec): ?>
-                            <p>Posté par :<span style="text-transform: capitalize;"> Vous</span>
-                            </p>
+                            <?php if (isset($_SESSION['id']) && $_SESSION['id'] == $rec) : ?>
+                                <p>Posté par :<span style="text-transform: capitalize;"> Vous</span>
+                                </p>
                             <?php else : ?>
-                            <p>Posté par :<span style="text-transform: capitalize;"> <?= $data2['pseudo'] ?></span>
-                            </p>
+                                <p>Posté par :<span style="text-transform: capitalize;"> <?= $data2['pseudo'] ?></span>
+                                </p>
                             <?php endif; ?>
-                            
+
                         </div>
                         <hr>
                         <div class="signalerpartager ">
-                        <?php if (!isset($_SESSION['id']) || (isset($_SESSION['id']) && $_SESSION['id'] != $data2['id_annonceurs'] )): ?>
-                            <p class="signaler partager" title="Signaler d'annonce">
-                                <i class="fa fa-warning"></i><a href="signaler.php?annonce=<?= $rec2 ?>&annonceur=<?= $rec ?>">
-                                    Signaler
-                                    l'annonce</a>
-                            </p>
+                            <?php if (!isset($_SESSION['id']) || (isset($_SESSION['id']) && $_SESSION['id'] != $data2['id_annonceurs'])) : ?>
+                                <p class="signaler partager" title="Signaler d'annonce">
+                                    <i class="fa fa-warning"></i><a href="signaler.php?annonce=<?= $rec2 ?>&annonceur=<?= $rec ?>">
+                                        Signaler
+                                        l'annonce</a>
+                                </p>
                             <?php endif; ?>
                             <?php if (isset($_SESSION['id']) && $_SESSION['id'] == $rec) : ?>
                                 <div>
                                     <button class="btn btn-success text-center px-1 mx-1">
-                                        
+
                                         <a class="link-light" style="text-decoration:none; border-radius:5px; display:inline-block" href="update.php?id=<?= $rec ?>&annonce=<?= $rec2 ?>" title="Modifier l'annonce"><strong>Modifier</strong></a>
-                                        
+
                                     </button>
                                     <button class="btn btn-danger  text-center px-1 mx-1">
                                         <a class="link-light" style="text-decoration:none; border-radius:5px; display:inline-block" href="delete_annonce.php?annonce=<?= $rec2 ?>" title="Voire l'annonce"><strong>Supprimer</strong></a>
-                                        
+
                                     </button>
                                 </div>
                             <?php endif; ?>
@@ -332,7 +327,7 @@ if ($res_vue == 0) {
                                     <a href="https://wa.me/<?= $data2['telw'] ?>" target="_blank">
                                         <p><i class="fa fa-whatsapp"></i> <span>Whatsapp</span></p>
                                     </a>
-                                </td>   
+                                </td>
                             </tr>
                         </table>
 
@@ -466,276 +461,7 @@ if ($res_vue == 0) {
             window.print();
         }
     </script>
-    <!-- changement auto -->
-
-
-    <?php
-    if (!empty($data['img_cover']) && !empty($data['photo_1']) && !empty($data['photo_2'])) { ?>
-
-        <script>
-            let images1 = [
-                "<?= $data['img_cover'] ?>",
-                "<?= $data['photo_1'] ?>",
-                "<?= $data['photo_2'] ?>"
-            ];
-
-            let iun = 0;
-
-            function changeImage() {
-                coversupp.src = images1[iun];
-                supp1.style.border = "none";
-                supp2.style.border = "none";
-                supp3.style.border = "none";
-                switch (iun) {
-                    case 0:
-                        supp1.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos couverture";
-                        break;
-                    case 1:
-                        supp2.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 1";
-                        break;
-                    case 2:
-                        supp3.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 2";
-                        break;
-                }
-                iun++;
-                if (iun == images1.length) {
-                    iun = 0;
-                }
-            }
-
-            setInterval(changeImage, 500);
-        </script>
-
-    <?php }
-    if (!empty($data['img_cover']) && !empty($data['photo_1']) && !empty($data['photo_2']) && !empty($data['photo_3'])) { ?>
-
-        <script>
-            let images2 = [
-                "<?= $data['img_cover'] ?>",
-                "<?= $data['photo_1'] ?>",
-                "<?= $data['photo_2'] ?>",
-                "<?= $data['photo_3'] ?>"
-            ];
-
-            let ideux = 0;
-
-            function changeImage() {
-                coversupp.src = images2[ideux];
-                supp1.style.border = "none";
-                supp2.style.border = "none";
-                supp3.style.border = "none";
-                supp4.style.border = "none";
-                switch (ideux) {
-                    case 0:
-                        supp1.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos couverture";
-                        break;
-                    case 1:
-                        supp2.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 1";
-                        break;
-                    case 2:
-                        supp3.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 2";
-                        break;
-                    case 3:
-                        supp4.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 3";
-                        break;
-                }
-                ideux++;
-                if (ideux == images2.length) {
-                    ideux = 0;
-                }
-            }
-
-            setInterval(changeImage, 500);
-        </script>
-
-    <?php }
-    if (!empty($data['img_cover']) && !empty($data['photo_1']) && !empty($data['photo_2']) && !empty($data['photo_3']) && !empty($data['photo_4'])) { ?>
-
-        <script>
-            let images3 = [
-                "<?= $data['img_cover'] ?>",
-                "<?= $data['photo_1'] ?>",
-                "<?= $data['photo_2'] ?>",
-                "<?= $data['photo_3'] ?>",
-                "<?= $data['photo_4'] ?>"
-            ];
-
-            let itrois = 0;
-
-            function changeImage() {
-                coversupp.src = images3[itrois];
-                supp1.style.border = "none";
-                supp2.style.border = "none";
-                supp3.style.border = "none";
-                supp4.style.border = "none";
-                supp5.style.border = "none";
-                switch (itrois) {
-                    case 0:
-                        supp1.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos couverture";
-                        break;
-                    case 1:
-                        supp2.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 1";
-                        break;
-                    case 2:
-                        supp3.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 2";
-                        break;
-                    case 3:
-                        supp4.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 3";
-                        break;
-                    case 4:
-                        supp5.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 4";
-                        break;
-                }
-                itrois++;
-                if (itrois == images3.length) {
-                    itrois = 0;
-                }
-            }
-
-            setInterval(changeImage, 500);
-        </script>
-
-    <?php }
-    if (!empty($data['img_cover']) && !empty($data['photo_1']) && !empty($data['photo_2']) && !empty($data['photo_3']) && !empty($data['photo_4']) && !empty($data['photo_5'])) { ?>
-
-        <script>
-            let images4 = [
-                "<?= $data['img_cover'] ?>",
-                "<?= $data['photo_1'] ?>",
-                "<?= $data['photo_2'] ?>",
-                "<?= $data['photo_3'] ?>",
-                "<?= $data['photo_4'] ?>",
-                "<?= $data['photo_5'] ?>"
-            ];
-
-            let iquatre = 0;
-
-            function changeImage() {
-                coversupp.src = images4[iquatre];
-                supp1.style.border = "none";
-                supp2.style.border = "none";
-                supp3.style.border = "none";
-                supp4.style.border = "none";
-                supp5.style.border = "none";
-                supp6.style.border = "none";
-                switch (iquatre) {
-                    case 0:
-                        supp1.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos couverture";
-                        break;
-                    case 1:
-                        supp2.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 1";
-                        break;
-                    case 2:
-                        supp3.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 2";
-                        break;
-                    case 3:
-                        supp4.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 3";
-                        break;
-                    case 4:
-                        supp5.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 4";
-                        break;
-                    case 5:
-                        supp6.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 5";
-                        break;
-                }
-                iquatre++;
-                if (iquatre == images4.length) {
-                    iquatre = 0;
-                }
-            }
-
-            setInterval(changeImage, 500);
-        </script>
-
-    <?php }
-    if (!empty($data['img_cover']) && !empty($data['photo_1']) && !empty($data['photo_2']) && !empty($data['photo_3']) && !empty($data['photo_4']) && !empty($data['photo_5']) && !empty($data['photo_6'])) { ?>
-
-        <script>
-            let images = [
-                "<?= $data['img_cover'] ?>",
-                "<?= $data['photo_1'] ?>",
-                "<?= $data['photo_2'] ?>",
-                "<?= $data['photo_3'] ?>",
-                "<?= $data['photo_4'] ?>",
-                "<?= $data['photo_5'] ?>",
-                "<?= $data['photo_6'] ?>"
-            ];
-
-            let i = 0;
-
-            function changeImage() {
-                coversupp.src = images[i];
-                supp1.style.border = "none";
-                supp2.style.border = "none";
-                supp3.style.border = "none";
-                supp4.style.border = "none";
-                supp5.style.border = "none";
-                supp6.style.border = "none";
-                supp7.style.border = "none";
-                switch (i) {
-                    case 0:
-                        supp1.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos couverture";
-                        break;
-                    case 1:
-                        supp2.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 1";
-                        break;
-                    case 2:
-                        supp3.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 2";
-                        break;
-                    case 3:
-                        supp4.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 3";
-                        break;
-                    case 4:
-                        supp5.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 4";
-                        break;
-                    case 5:
-                        supp6.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 5";
-                        break;
-                    case 6:
-                        supp7.style.border = "solid 2px #ec3e0e";
-                        coversupp.alt = "photos supplémentaires 6";
-                        break;
-                }
-                i++;
-                if (i == images.length) {
-                    i = 0;
-                }
-            }
-
-            setInterval(changeImage, 3500);
-        </script>
-
-    <?php }
-
-
-
-
-    ?>
-
+   
     <script src="//code.tidio.co/soutospimq4pk32r0mcxjjhtoqnjc0de.js" async></script>
     <script src="main.js"></script>
 </body>
